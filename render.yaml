@@ -1,0 +1,92 @@
+# ===========================================================
+# render.yaml — Render.com deployment configuration
+# FreightAI: Intelligent Freight Forecasting & Vessel Chartering
+# ===========================================================
+# This file defines two services:
+#   1. freightai-backend  — FastAPI web service (Python)
+#   2. freightai-frontend — React/Vite static site
+#
+# Deploy steps:
+#   1. Push this repository to GitHub.
+#   2. Create a new Blueprint on https://dashboard.render.com
+#      and point it to this repo.
+#   3. Set ALLOWED_ORIGINS in the backend service to the
+#      deployed frontend URL after the first deploy.
+#   4. Set VITE_API_URL in the frontend service to the
+#      deployed backend URL and redeploy frontend.
+# ===========================================================
+
+services:
+  # ── 1. FastAPI Backend ────────────────────────────────────
+  - type: web
+    name: freightai-backend
+    runtime: python
+    region: oregon         # choose a region close to your users
+    plan: free             # upgrade to starter/standard for production
+
+    # Working directory for all build/start commands
+    rootDir: backend
+
+    # Install Python dependencies
+    buildCommand: pip install -r requirements.txt
+
+    # Start uvicorn — Render sets $PORT automatically
+    # Uses 1 worker on free tier; increase for paid plans
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1
+
+    # Health check — Render pings this to decide if the deploy succeeded
+    healthCheckPath: /api/health
+
+    # Environment variables for the backend service.
+    # Set ALLOWED_ORIGINS to your frontend URL after first deploy.
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: ALLOWED_ORIGINS
+        # Replace with the actual Render frontend URL after first deploy.
+        # Example: https://freightai-frontend.onrender.com
+        value: ""   # temporarily allow all origins; update after deploy
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+    # Persist the ML model files and dataset between deploys.
+    # ML artifacts are committed to the repo so this is not strictly
+    # needed, but it speeds up redeploys if models are large.
+    # Note: free tier does NOT support disks — remove this section
+    # if you're using the free plan.
+    # disk:
+    #   name: ml-models
+    #   mountPath: /opt/render/project/src/backend/ml/models
+    #   sizeGB: 1
+
+  # ── 2. React / Vite Frontend (Static Site) ───────────────
+  - type: web
+    name: freightai-frontend
+    runtime: static
+    region: oregon
+
+    rootDir: frontend
+
+    # Build the Vite production bundle
+    buildCommand: npm install && npm run build
+
+    # Serve the Vite output directory
+    staticPublishPath: dist
+
+    # SPA routing: redirect all 404s to index.html so React
+    # Router can handle client-side routes.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+    # Build-time environment variables.
+    # Set VITE_API_URL to the backend service's public URL.
+    envVars:
+      - key: VITE_API_URL
+        # Replace with your backend service URL after first deploy.
+        # Example: https://freightai-backend.onrender.com
+        value: ""   # empty → frontend uses relative /api paths (won't work
+                    # on separate domains; set this to the backend URL)
+      - key: NODE_VERSION
+        value: "20"

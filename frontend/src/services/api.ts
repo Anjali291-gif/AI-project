@@ -12,7 +12,24 @@ import {
   ModelMetadata
 } from '../types';
 
-export const API_BASE_URL = (import.meta as any).env?.VITE_API_URL || 'http://127.0.0.1:8000';
+// API Base URL resolution — environment-aware
+// Priority:
+//   1. VITE_API_URL env var (set at build time for production deployments)
+//   2. Empty string — uses relative /api paths, which work with:
+//      a) Vite dev proxy (local development)
+//      b) Same-origin deployments (backend serves frontend at same domain)
+//
+// NEVER hardcode a production URL here. Set VITE_API_URL in the deployment
+// environment (Render, Netlify, Vercel, etc.) instead.
+export const API_BASE_URL: string = (() => {
+  const envUrl = import.meta.env.VITE_API_URL as string | undefined;
+  // Return the env URL if set and non-empty; otherwise use relative paths
+  if (envUrl && envUrl.trim() !== '') {
+    return envUrl.trim().replace(/\/$/, ''); // strip trailing slash
+  }
+  // Relative base — works with Vite proxy in dev, and same-origin in prod
+  return '';
+})();
 
 export class ApiService {
   private static isBackendAvailable: boolean | null = null;

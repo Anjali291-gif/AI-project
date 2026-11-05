@@ -10,18 +10,44 @@ import numpy as np
 import pandas as pd
 import joblib
 
+# Load .env file if present (local development). In production (Render, etc.)
+# environment variables are injected by the platform — dotenv is a no-op.
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv not installed; env vars must be set externally
+
 app = FastAPI(
     title="FreightAI - Maritime Freight Forecasting & Vessel Chartering Engine",
     description="P23 — Intelligent Freight Forecasting & Vessel Chartering System (SIH 2026, SIH26006)",
     version="1.0.0"
 )
 
+# ---------------------------------------------------------------------------
+# CORS — environment-driven for safe production deployment
+# ---------------------------------------------------------------------------
+# ALLOWED_ORIGINS env var: comma-separated list of allowed frontend origins.
+# Examples:
+#   Development (default):  * (open, for local dev)
+#   Production (Render):    https://freightai.onrender.com,https://your-domain.com
+# Leave blank or "*" to allow all origins (development default).
+_raw_origins = os.environ.get("ALLOWED_ORIGINS", "").strip()
+
+if _raw_origins and _raw_origins != "*":
+    _cors_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+    _cors_allow_all = False
+else:
+    _cors_origins = ["*"]
+    _cors_allow_all = True
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_cors_origins,
+    # allow_credentials must be False when allow_origins=["*"]
+    allow_credentials=not _cors_allow_all,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
 )
 
 # Load Trained ML Model & Metadata

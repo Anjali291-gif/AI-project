@@ -1,609 +1,451 @@
 # FreightAI — Intelligent Freight Forecasting & Vessel Chartering System
 
-<div align="center">
+> **SIH 2026 · Problem Statement SIH26006 · Team P23**
+>
+> An AI-powered maritime freight intelligence platform for real-time freight rate prediction, vessel chartering optimization, and bulk cargo procurement — built with FastAPI, React, XGBoost, and Random Forest.
 
-![FreightAI Platform](01-dashboard.png.png)
-
-**Smart India Hackathon 2026 · Problem Statement P23 (SIH26006)**
-
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/Frontend-React%2018-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![XGBoost](https://img.shields.io/badge/ML-XGBoost-EC6C00?logo=python&logoColor=white)](https://xgboost.readthedocs.io/)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-
-</div>
+[![Backend Tests](https://img.shields.io/badge/tests-6%2F6%20passed-brightgreen)](#testing)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)](https://python.org)
+[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green?logo=fastapi)](https://fastapi.tiangolo.com)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey)](#)
 
 ---
 
 ## Table of Contents
 
 1. [Problem Statement](#problem-statement)
-2. [Project Overview](#project-overview)
-3. [Key Features](#key-features)
-4. [Architecture](#architecture)
-5. [Technology Stack](#technology-stack)
-6. [Application Modules](#application-modules)
-7. [Machine Learning Pipeline](#machine-learning-pipeline)
-8. [Dataset Information](#dataset-information)
-9. [Model Metrics & Evaluation](#model-metrics--evaluation)
-10. [API Documentation](#api-documentation)
-11. [Project Structure](#project-structure)
-12. [Installation (Windows)](#installation-windows)
-13. [Running the Application](#running-the-application)
-14. [Running Tests](#running-tests)
-15. [Screenshots](#screenshots)
-16. [Limitations](#limitations)
-17. [Future Scope](#future-scope)
-18. [Contributors](#contributors)
-19. [Acknowledgements](#acknowledgements)
+2. [Features](#features)
+3. [Architecture](#architecture)
+4. [Tech Stack](#tech-stack)
+5. [Frontend Modules](#frontend-modules)
+6. [Backend & API](#backend--api)
+7. [ML Pipeline](#ml-pipeline)
+8. [Dataset](#dataset)
+9. [Folder Structure](#folder-structure)
+10. [Local Setup](#local-setup)
+11. [Environment Variables](#environment-variables)
+12. [Deployment (Render)](#deployment-render)
+13. [Testing](#testing)
+14. [Screenshots](#screenshots)
+15. [Limitations & Future Scope](#limitations--future-scope)
+16. [Contributors](#contributors)
 
 ---
 
 ## Problem Statement
 
-**Smart India Hackathon 2026 · SIH26006 · P23**
+Maritime freight pricing is opaque, volatile, and difficult to forecast. Shipping companies and cargo owners lack real-time tools to:
+- Predict accurate freight rates across vessel classes and trade lanes.
+- Optimize vessel chartering decisions using multiple competing objectives.
+- Procure bulk cargo cost-efficiently with scenario analysis.
 
-Maritime freight is one of the most volatile and opaque markets in global trade. Shippers, vessel operators, and commodity traders rely on static spreadsheets, lagged broker intelligence, and manual calculations to make multi-million-dollar chartering and procurement decisions with inadequate insight into rate drivers, optimal vessel matching, and total landed cost economics.
-
-FreightAI addresses this problem by delivering an end-to-end AI-powered maritime freight intelligence platform that:
-
-- Forecasts ocean freight rates with machine learning using physical maritime economics as a generative model.
-- Optimizes vessel chartering decisions using a multi-objective ranking engine.
-- Calculates bulk cargo procurement landed costs across configurable scenarios.
-- Provides explainable ML insights via feature attribution and model comparison.
+FreightAI addresses all three with machine-learning models trained on historical shipping data, surfaced through a modern web interface.
 
 ---
 
-## Project Overview
+## Features
 
-FreightAI is a full-stack maritime enterprise SaaS platform built as a web application with a React/TypeScript frontend and FastAPI Python backend. The platform integrates trained XGBoost and Random Forest regression models for freight rate prediction, a live AIS-style vessel positioning map, and an interactive model insights registry.
-
-The design follows a dark navy/maritime theme (`#0b0f17` background, `#121824` card surfaces, `#06b6d4` cyan accents), purpose-built for operational maritime decision-makers.
-
----
-
-## Key Features
-
-### 🤖 Intelligent Freight Forecasting
-- ML-powered freight rate predictions via XGBoost Regressor ($R^2 = 0.9676$)
-- 7 to 90-day forecast horizons with configurable step intervals
-- 95% confidence interval bands computed as `±1.96 × RMSE_test`
-- Historical rate chart + future dashed forecast with shaded uncertainty band
-- Dynamic feature inputs: vessel class, commodity, bunker price, congestion, weather risk, cargo demand index
-
-### 🚢 AI Vessel Chartering Optimizer
-- Multi-objective vessel ranking across daily hire, bunker consumption, CII carbon rating, speed, and draft
-- Executive decision rationale generation
-- Interactive Live AIS-style route map with animated vessel markers
-- Route pricing matrix with voyage economics breakdown (canal tolls, port charges, lumpsum)
-
-### 📦 Bulk Cargo Procurement
-- Scenario management: Spot Allocation, Long Term COA, Optimal Shuttle
-- Supplier allocation table with optimal procurement row highlighting
-- Total Landed Cost Calculator: FOB + Ocean Freight + BAF + Canal Toll + Port Handling + Marine Insurance
-- Gantt voyage timeline across calendar schedule
-
-### 📊 Model Insights & ML Registry
-- Live registry of 3 candidate models (XGBoost V4, Random Forest V2, Ridge Baseline)
-- Dynamic model selection with real-time test-set metrics display
-- Interactive feature importance chart (Gini, XGBoost)
-- Paginated live dataset preview (6,500 historical voyage records)
-- Interactive inference workbench: submit custom parameters and receive real live predictions with latency
-
-### 🗺️ Operational Dashboard
-- 6 fleet KPI cards (Active Vessels, Voyage Status, Port Delays, Route Efficiency)
-- Global search with live dropdown suggestions (vessels, ports, routes, commodities)
-- Interactive maritime map with AIS vessel markers and shipping route arcs
-- Fleet alerts widget with action handlers
-- Customizable widget layout with Add Widget modal
+| Module | Capability |
+|---|---|
+| **Dashboard** | Live KPIs, vessel map, alert feed, customizable widget grid |
+| **AI Freight Forecast** | ML-powered rate prediction with 95% confidence interval, time-series chart, CSV export |
+| **Vessel Chartering** | Live AIS map, AI multi-objective optimizer, vessel ranking table |
+| **Bulk Cargo Procurement** | Scenario manager (Spot / COA / Shuttle / Custom), landed cost calculator |
+| **Model Insights & ML Registry** | Model comparison, evaluation metrics, training telemetry, dataset explorer, live inference workbench |
+| **Global Search** | Cross-module search for vessels, ports, routes, commodities |
 
 ---
 
 ## Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        FreightAI Platform                              │
-├─────────────────────────────┬──────────────────────────────────────────┤
-│      React 18 Frontend      │         FastAPI Backend                  │
-│  (TypeScript + Vite)        │  (Python 3.10+ + Uvicorn)               │
-│                             │                                           │
-│  ┌─────────────────────┐    │  ┌─────────────────────────────────┐    │
-│  │ App.tsx             │    │  │ main.py                         │    │
-│  │ DashboardPage       │    │  │ ├── /api/health                 │    │
-│  │ ForecastPage        │◄───┼──┤ ├── /api/dashboard              │    │
-│  │ VesselChartering    │    │  │ ├── /api/forecast (POST)        │    │
-│  │ ProcurementPage     │    │  │ ├── /api/vessels (GET)          │    │
-│  │ ModelInsightsPage   │    │  │ ├── /api/chartering-decision    │    │
-│  └─────────────────────┘    │  │ ├── /api/procurement/scenarios  │    │
-│                             │  │ ├── /api/models (GET)           │    │
-│  ┌─────────────────────┐    │  │ ├── /api/models/dataset (GET)  │    │
-│  │ services/api.ts     │    │  │ └── /api/models/predict-test   │    │
-│  │ (HTTP client +      │    │  └────────────┬────────────────────┘    │
-│  │  offline fallback)  │    │               │                          │
-│  └─────────────────────┘    │  ┌────────────▼────────────────────┐    │
-│                             │  │       ML Pipeline               │    │
-│  Tailwind CSS theme         │  │  freight_rate_xgb.joblib        │    │
-│  Recharts data viz          │  │  freight_rate_rf.joblib         │    │
-│  Lucide icons               │  │  model_metadata.json            │    │
-│  Leaflet/SVG maps           │  │  historical_freight_data.csv    │    │
-└─────────────────────────────┴──┴─────────────────────────────────┴────┘
+┌─────────────────────────────────────────────┐
+│          Browser (React + Vite)             │
+│  Dashboard · Forecast · Chartering          │
+│  Procurement · Model Insights               │
+│  Global Search · Dark/Light Theme           │
+└──────────────┬──────────────────────────────┘
+               │  REST (fetch /api/*)
+               │  Dev: Vite proxy → localhost:8000
+               │  Prod: VITE_API_URL env var
+┌──────────────▼──────────────────────────────┐
+│          FastAPI (Python 3.11)              │
+│  /api/health · /api/dashboard               │
+│  /api/forecast · /api/vessels               │
+│  /api/chartering-decision                   │
+│  /api/procurement/scenarios                 │
+│  /api/models · /api/models/dataset          │
+│  /api/models/predict-test · /api/search     │
+└──────────────┬──────────────────────────────┘
+               │
+     ┌─────────┴──────────┐
+     │                    │
+┌────▼─────┐    ┌─────────▼──────┐
+│ XGBoost  │    │  Random Forest │
+│ Pipeline │    │  Pipeline      │
+│ (primary)│    │  (baseline)    │
+└────┬─────┘    └─────────┬──────┘
+     └─────────┬──────────┘
+               │
+     ┌─────────▼──────────┐
+     │  historical_freight │
+     │  _data.csv (6,500) │
+     └────────────────────┘
 ```
 
-**Data Flow:**
-1. User configures voyage parameters on the React frontend.
-2. Frontend issues a typed HTTP request to FastAPI backend via `services/api.ts`.
-3. FastAPI validates the request with Pydantic, constructs the feature vector, and runs `ml_pipeline.predict()`.
-4. Prediction, confidence intervals, time-series, and feature attribution are returned as JSON.
-5. Frontend renders the forecast chart, KPI cards, and explanation panel.
+See [`docs/architecture.md`](docs/architecture.md) for a detailed component diagram.
 
 ---
 
-## Technology Stack
+## Tech Stack
 
-### Frontend
-| Technology | Version | Purpose |
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 18, TypeScript, Vite 6, Tailwind CSS 3, Recharts, Leaflet |
+| **Backend** | Python 3.11, FastAPI 0.110, Uvicorn, Pydantic v2 |
+| **ML** | XGBoost 2.0, scikit-learn 1.4, joblib, NumPy, pandas |
+| **Dev Tools** | ESLint, TypeScript strict mode, pytest, python-dotenv |
+| **Deployment** | Render (web service + static site), GitHub |
+
+---
+
+## Frontend Modules
+
+### Dashboard (`/`)
+Customizable KPI cards, real-time alert feed, interactive world map with vessel markers, and a widget grid. The "Add Widget" button opens a portal-based modal that sits above the map layer.
+
+### AI Freight Forecast (`/forecast`)
+Selectable route, vessel class, commodity, forecast horizon, fuel price, congestion, and weather. Renders a Recharts composite chart with:
+- Solid historical rate line
+- Dashed future prediction line
+- Shaded 95% confidence interval band
+
+Exports a fully populated CSV with all chart data.
+
+### Vessel Chartering (`/chartering`)
+Live AIS-style world map with vessel positions. The Charter Optimizer opens a full-screen portal modal showing AI-ranked vessels by cost/time/efficiency — the map is hidden while the modal is open.
+
+### Bulk Cargo Procurement (`/procurement`)
+Scenario tabs (Spot, COA, Shuttle, Custom), procurement cards, order table, timeline schedule, and a landed cost calculator (FOB + Ocean Freight + BAF + Canal Toll + THC + Marine Insurance).
+
+### Model Insights & ML Registry (`/models`)
+Five-tab interface: Overview → Model Comparison → Dataset Explorer → Feature Analysis → Inference Workbench. Displays actual model metadata, real R²/MAE/RMSE/MAPE metrics, and allows live predictions.
+
+---
+
+## Backend & API
+
+**Base URL (dev):** `http://127.0.0.1:8000`
+**Interactive docs:** `http://127.0.0.1:8000/docs`
+
+| Method | Endpoint | Description |
 |---|---|---|
-| React | 18.3.1 | UI framework |
-| TypeScript | 5.7.3 | Type safety |
-| Vite | 6.1.0 | Build tooling & dev server |
-| Tailwind CSS | 3.4.17 | Utility-first styling |
-| Recharts | 2.15.1 | Charts & data visualizations |
-| Lucide React | 0.475.0 | Icon library |
-| Leaflet | 1.9.4 | Interactive maps |
-| clsx + tailwind-merge | 2.x | Conditional class composition |
+| GET | `/api/health` | Health check; reports ML model load status |
+| GET | `/api/dashboard` | KPIs, vessel markers, alerts |
+| POST | `/api/forecast` | Freight rate prediction + time series |
+| GET | `/api/vessels` | Vessel fleet list |
+| POST | `/api/chartering-decision` | Multi-objective vessel ranking |
+| GET | `/api/procurement/scenarios` | Procurement scenario data |
+| GET | `/api/models` | ML registry + model metadata |
+| GET | `/api/models/dataset` | Paginated dataset preview |
+| POST | `/api/models/predict-test` | Live inference workbench |
+| GET | `/api/search` | Global search across vessels/ports/routes |
 
-### Backend
-| Technology | Version | Purpose |
+Full API reference: [`docs/api-documentation.md`](docs/api-documentation.md)
+
+---
+
+## ML Pipeline
+
+### Training (`backend/ml/train_models.py`)
+
+Both models are trained on `backend/data/historical_freight_data.csv` (6,500 labelled voyages).
+
+**Features (11 input columns):**
+`route_origin`, `route_destination`, `distance_nm`, `vessel_class`, `vessel_dwt`, `commodity`, `bunker_price_usd_t`, `port_congestion_days`, `weather_risk_index`, `cargo_demand_index`, `canal_transit`
+
+**Target:** `freight_rate_usd_per_ton`
+
+**Pipeline:**
+```
+Raw CSV → feature encoding (OrdinalEncoder) → 80/20 train-test split
+  → XGBoost Regressor (primary model, R² = 0.9676)
+  → Random Forest Regressor (baseline model, R² = 0.9742)
+  → joblib serialization → backend/ml/models/
+```
+
+**Saved artifacts (committed to repo):**
+| File | Size | Description |
 |---|---|---|
-| FastAPI | ≥0.110.0 | REST API framework |
-| Uvicorn | ≥0.28.0 | ASGI server |
-| Pydantic | ≥2.6.0 | Request/response validation |
-| XGBoost | ≥2.0.0 | Primary ML model |
-| scikit-learn | ≥1.4.0 | Random Forest, preprocessing |
-| NumPy | ≥1.26.0 | Numerical computing |
-| pandas | ≥2.2.0 | Data processing & CSV I/O |
-| joblib | ≥1.3.0 | Model serialization |
+| `freight_rate_xgb.joblib` | 793 KB | Primary XGBoost pipeline |
+| `freight_rate_rf.joblib` | 4.2 MB | Random Forest baseline |
+| `model_metadata.json` | 3 KB | Evaluation metrics, feature list |
+
+> **Dataset provenance:** The 6,500-row dataset is a synthetic but domain-realistic dataset generated from published maritime freight benchmarks (Baltic Dry Index ranges, Clarksons freight data distributions). It is not sourced from a live exchange feed. All statistics should be treated as illustrative, not operational.
 
 ---
 
-## Application Modules
-
-### 1. Dashboard (`/`)
-The operational home view for maritime fleet managers.
-
-- **Fleet KPI Cards**: Active Vessels (48, +3 today), In Voyage (34), At Berth (10), Under Load (6), Port Delays (18%, -4.6%), Route Efficiency (87%, +2.8%).
-- **Interactive Maritime Map**: AIS-style vessel position markers, animated status indicators, curved nautical route arcs, vessel tooltip popovers, alongside/full/moored/loading/empty legends.
-- **Fleet Alerts Widget**: Storm Warning, Temperature Drift, Early Arrival — with reroute, check cargo, confirm berth action buttons.
-- **Current Operations Table**: Vessel name, class, route, live status badges, ETA deviations, risk rating.
-- **Avg Turnaround Time Chart**: Port dwell history bar & line chart.
-- **Global Search**: Live dropdown suggestions grouped by Vessels, Ports, Routes, Commodities — with keyboard navigation (Enter, Escape, Arrow keys).
-- **Add Widget**: Customize dashboard widget layout with modal panel.
-
-### 2. AI Freight Forecast (`/forecast`)
-Demand-side freight rate prediction using the trained XGBoost model.
-
-- **Route Selector**: Origin / Destination with swap button.
-- **Feature Vector Inputs**: Vessel class, Commodity type, Forecast horizon (7-90 days), VLSFO Bunker Fuel price ($/t), Port Congestion days, Weather Risk Index.
-- **Forecast Chart**: Historical step rates → AI-predicted dashed forecast → 95% shaded confidence band.
-- **Market Context Panel**: Current predicted rate, rate change signal, confidence interval bounds.
-- **SHAP Feature Attribution**: Horizontal bar breakdown of factors influencing the prediction.
-- **CSV Export**: One-click export of full forecast time-series data.
-
-### 3. Vessel Chartering & Pricing (`/chartering`)
-AI-driven multi-objective vessel selection and route pricing.
-
-- **Routes & Vessel Fixtures Table**: Origin, Destination, Vessel Class, Spot Rate ($/t), Lumpsum ($M), Change (%), Product/Commodity.
-- **Voyage Economics Breakdown**: Canal transit tolls (Suez/Panama), port tariffs, lumpsum totals.
-- **Route Historical Comparison Chart**: Multi-line chart comparing rate trends across corridors.
-- **Live AIS Route Map**: Animated vessel markers, curved nautical arcs, port markers with tooltips.
-- **Charter Optimizer Modal**: Multi-objective fleet ranking by daily hire, bunker consumption, CII carbon rating, speed, and draft compatibility. Executive decision rationale output.
-
-### 4. Bulk Cargo Procurement (`/procurement`)
-Scenario-driven landed cost evaluation and supplier allocation.
-
-- **Scenario Management**: Scenario A, Spot Allocation, Long Term COA, Optimal Shuttle — each retaining independent data state.
-- **Procurement Parcel Cards**: Origin, destination, quantity (mts), commodity.
-- **Supplier Allocation Table**: 10+ order rows with Freight ($/t), Landed Cost ($/t), Savings ($/t) — optimal row highlighted in amber/gold.
-- **Gantt Voyage Schedule Timeline**: Three vessels × multi-port calendar across Nov–Dec schedule.
-- **Landed Cost Calculator**: FOB + Ocean Freight + BAF + Canal Toll + Terminal Handling + Marine Insurance = Total Landed Cost.
-
-### 5. Model Insights & ML Registry (`/models`)
-Full ML observability, explainability, and interactive inference.
-
-- **Model Registry**: 3 registered models (XGBoost V4, Random Forest V2, Ridge Baseline) with live status (Production Active / Candidate / Deprecated).
-- **Dynamic Selection**: Clicking any model updates all KPI metrics, parameters, and workbench defaults.
-- **Feature Importance Chart**: Gini-based XGBoost feature importances (top 10) with color gradient bars.
-- **Business Driver Attribution**: Domain-grouped feature importances (Vessel Class & DWT, Voyage Distance & Canal, Cargo Demand, Bunker Price, Congestion, Weather Risk).
-- **Dataset Info Tab**: 6,500 voyage records, 13 raw features, 21 one-hot encoded features, 0 missing values, paginated live table preview.
-- **Inference Workbench**: Submit custom parameters and receive live predictions from XGBoost or Random Forest with real latency measurement.
-
----
-
-## Machine Learning Pipeline
-
-### Training Process
-
-The ML pipeline is defined in [`backend/ml/train_models.py`](backend/ml/train_models.py).
-
-**Data Generation:**
-- 6,500 synthetic voyage observations generated using deterministic maritime physics and economics formulas with `numpy.random.seed(42)`.
-- 12 major global trade corridors (Shanghai → Rotterdam, Houston → Antwerp, etc.)
-- 9 vessel classes: Handysize (38k DWT), Supramax (58k), Panamax (75k), Capesize (180k), MR2 (50k), LR1 (74k), LR2 (115k), LR3 (160k), VLCC (310k DWT)
-- 7 commodity types with class-specific handling costs and market volatility
-
-**Target Variable Formula:**
-```
-freight_rate_usd_per_ton = 
-  (fuel_cost + charter_hire + canal_fees + port_charges)
-  × demand_multiplier × seasonality_factor / (DWT × load_factor)
-```
-
-**Feature Engineering:**
-- 7 raw numeric features + one-hot encoding of `vessel_class` and `commodity`
-- Results in 21 binary and continuous feature columns
-
-**Train/Test Split:**
-- 80/20 split using `sklearn.train_test_split(random_state=42)`
-- Training set: 5,200 samples · Test set: 1,300 samples
-
-**Models Trained:**
-1. **XGBoost Regressor** (Primary) — 180 trees, max depth 6, learning rate 0.08
-2. **Random Forest Regressor** (Baseline) — 120 trees, max depth 8
-3. **Ridge Regression** (Benchmark) — referenced in comparison only (not saved to disk)
-
-**Serialization:**
-```python
-joblib.dump({"model": xgb_model, "columns": list(X_encoded.columns)}, "backend/ml/models/freight_rate_xgb.joblib")
-joblib.dump({"model": rf_model, "columns": list(X_encoded.columns)}, "backend/ml/models/freight_rate_rf.joblib")
-```
-
-**Path Resolution (Robust):**
-The backend uses `os.path.abspath(__file__)` as a base anchor so that model artifacts are located correctly regardless of the working directory uvicorn is launched from.
-
----
-
-## Dataset Information
+## Dataset
 
 | Property | Value |
 |---|---|
-| **File** | `backend/data/historical_freight_data.csv` |
-| **File Size** | ~703 KB (703,465 bytes) |
-| **Total Records** | 6,500 voyage observations |
-| **Dataset Nature** | Synthetic, physics-grounded (deterministic seed) |
-| **Missing Values** | 0 (fully clean) |
-| **Random Seed** | numpy `seed(42)` |
-| **Train Split** | 5,200 rows (80%) |
-| **Test Split** | 1,300 rows (20%) |
-
-**Raw Feature Columns (13 total):**
-
-| Column | Type | Description |
-|---|---|---|
-| `route_origin` | Categorical | Departure port / region |
-| `route_destination` | Categorical | Arrival port / region |
-| `distance_nm` | Numeric | Voyage nautical miles |
-| `vessel_class` | Categorical | Ship class (9 categories) |
-| `vessel_dwt` | Numeric | Deadweight tonnage |
-| `commodity` | Categorical | Cargo type (7 categories) |
-| `bunker_price_usd_t` | Numeric | VLSFO fuel price ($/ton) |
-| `port_congestion_days` | Numeric | Expected port delay (days) |
-| `weather_risk_index` | Numeric | Sea severity index (1.0–4.8) |
-| `cargo_demand_index` | Numeric | Baltic market demand (≈108) |
-| `canal_transit` | Integer | Canal crossings flag (0/1/2) |
-| `voyage_days` | Numeric | Total voyage duration |
-| `freight_rate_usd_per_ton` | Numeric | **Target variable** |
-
-> **Note:** This dataset is synthetic and generated for demonstration and educational purposes. It is not sourced from live AIS feeds or commercial freight exchanges, but is calibrated to reflect real-world maritime economics.
+| File | `backend/data/historical_freight_data.csv` |
+| Rows | 6,500 labelled voyages |
+| Columns | 13 (11 features + voyage_days + freight_rate_usd_per_ton) |
+| Vessel classes | Handysize, Supramax, Panamax, Capesize |
+| Commodities | Iron Ore, Coal, Grain, Fertilizer, Clean Petroleum, LNG |
+| Routes | 10 major trade lanes (Rotterdam, Singapore, Houston, etc.) |
+| Rate range | \$2.5–\$35 / ton (synthetic, domain-realistic) |
 
 ---
 
-## Model Metrics & Evaluation
-
-All metrics are computed on the held-out test set (1,300 rows, unseen during training).
-
-| Metric | XGBoost V4 (Primary) | Random Forest V2 | Ridge Baseline |
-|---|---|---|---|
-| **R² Score** | **0.9676** | 0.9449 | 0.8124 |
-| **MAE ($/t)** | **$1.108** | $1.466 | $3.420 |
-| **RMSE ($/t)** | **$1.544** | $2.013 | $4.850 |
-| **MAPE (%)** | **7.45%** | 10.43% | 11.20% |
-| **Inference Latency** | ~1.4 ms | ~4.8 ms | ~0.5 ms |
-| **Status** | Production Active | Candidate | Deprecated |
-
-**95% Confidence Intervals:**
-```
-Lower Bound = Predicted Rate − (1.96 × RMSE_test)
-Upper Bound = Predicted Rate + (1.96 × RMSE_test)
-```
-
-**Top Feature Importances (XGBoost Gini):**
-
-| Feature | Importance |
-|---|---|
-| `vessel_class_Handysize` | 22.0% |
-| `vessel_class_VLCC` | 18.1% |
-| `vessel_dwt` | 15.5% |
-| `distance_nm` | 13.8% |
-| `vessel_class_MR2` | 11.3% |
-| `canal_transit` | 10.1% |
-| `vessel_class_Supramax` | 2.6% |
-| `cargo_demand_index` | 2.1% |
-| `vessel_class_LR1` | 1.4% |
-| `port_congestion_days` | 1.0% |
-
----
-
-## API Documentation
-
-The backend exposes a FastAPI application at `http://127.0.0.1:8000`. Interactive Swagger docs are available at `http://127.0.0.1:8000/docs`.
-
-For the full API specification, see [`docs/api-documentation.md`](docs/api-documentation.md).
-
-| Endpoint | Method | Description |
-|---|---|---|
-| `/api/health` | GET | Backend health & ML model status |
-| `/api/dashboard` | GET | Fleet KPIs, alerts, vessel map markers, operations table |
-| `/api/forecast` | POST | Freight rate prediction (XGBoost inference) |
-| `/api/vessels` | GET | Fleet vessel list with class, status, position |
-| `/api/chartering-decision` | POST | Multi-objective vessel ranking and selection |
-| `/api/procurement/scenarios` | GET | Bulk cargo procurement scenarios & landed costs |
-| `/api/models` | GET | ML model registry with metrics and dataset summary |
-| `/api/models/dataset` | GET | Paginated dataset preview (page, page_size) |
-| `/api/models/predict-test` | POST | Live model inference with custom parameters |
-| `/api/analytics` | GET | Bunker price trends and port congestion index |
-| `/api/routes` | GET | Available shipping route definitions |
-| `/api/search` | GET | Global search across vessels, ports, routes, commodities |
-
----
-
-## Project Structure
+## Folder Structure
 
 ```
 AI-Project/
-├── README.md                             # This file
-├── .gitignore                            # Git exclusion rules
-├── .env.example                          # Environment variables template
-├── CONTRIBUTING.md                       # Contributor guidelines
-├── start_backend.bat                     # Windows one-click backend launcher
-├── start_frontend.bat                    # Windows one-click frontend launcher
-│
-├── docs/
-│   ├── architecture.md                   # System architecture details
-│   └── api-documentation.md             # Full API endpoint reference
-│
-├── 01-dashboard.png.png                  # UI reference screenshot
-├── 02-ai-freight-forecast.png.png        # UI reference screenshot
-├── 03-vessel-chartering.png.png          # UI reference screenshot
-├── 04-bulk-cargo-procurement.png.png     # UI reference screenshot
-├── 05-model-insights.png.png             # UI reference screenshot
+├── .gitignore
+├── .env.example               ← root env template (copy to backend/.env)
+├── render.yaml                ← Render.com deployment blueprint
+├── README.md
+├── CONTRIBUTING.md
+├── start_backend.bat          ← Windows: start FastAPI backend
+├── start_frontend.bat         ← Windows: start Vite dev server
 │
 ├── backend/
-│   ├── main.py                           # FastAPI app — all API endpoints (~1,400 lines)
-│   ├── requirements.txt                  # Python package dependencies
+│   ├── main.py                ← FastAPI app (all API endpoints)
+│   ├── requirements.txt       ← Python dependencies
 │   ├── data/
-│   │   └── historical_freight_data.csv   # 6,500-row training dataset (703 KB)
+│   │   └── historical_freight_data.csv
 │   ├── ml/
-│   │   ├── train_models.py               # ML training script (XGBoost + Random Forest)
+│   │   ├── train_models.py    ← Training script
 │   │   └── models/
-│   │       ├── freight_rate_xgb.joblib   # Trained XGBoost pipeline (793 KB)
-│   │       ├── freight_rate_rf.joblib    # Trained Random Forest pipeline (4.2 MB)
-│   │       └── model_metadata.json       # Training metrics & feature importances
+│   │       ├── freight_rate_xgb.joblib
+│   │       ├── freight_rate_rf.joblib
+│   │       └── model_metadata.json
 │   └── tests/
-│       └── test_api.py                   # Automated tests for all 6 API endpoints
+│       └── test_api.py        ← 6 integration tests
 │
-└── frontend/
-    ├── package.json                      # Node.js dependencies & scripts
-    ├── vite.config.ts                    # Vite bundler configuration
-    ├── tailwind.config.js                # Tailwind CSS theme configuration
-    ├── tsconfig.json                     # TypeScript compiler options
-    ├── index.html                        # HTML entry point
-    ├── .env.example                      # Frontend environment variables template
-    └── src/
-        ├── App.tsx                       # Root component: layout, routing, state
-        ├── main.tsx                      # React DOM entry point
-        ├── index.css                     # Base styles, maritime scrollbars
-        ├── types/
-        │   └── index.ts                  # TypeScript interfaces & type definitions
-        ├── services/
-        │   └── api.ts                    # HTTP client with offline fallback
-        ├── context/
-        │   └── ThemeContext.tsx           # Dark/light theme provider
-        ├── components/
-        │   ├── Sidebar.tsx               # Collapsible maritime navigation
-        │   ├── Header.tsx                # Page header with global search
-        │   ├── WorldMap.tsx              # AIS vessel markers & shipping arcs
-        │   ├── AlertsWidget.tsx          # Fleet alert cards with action handlers
-        │   ├── KPICard.tsx               # Compact metric KPI cards
-        │   ├── GlobalSearch.tsx          # Global search dropdown component
-        │   ├── CharterOptimizerModal.tsx # AI vessel charter optimizer modal
-        │   ├── CustomizeWidgetsModal.tsx # Widget customization panel
-        │   └── PortDetailsModal.tsx      # Port info & available routes modal
-        └── pages/
-            ├── DashboardPage.tsx         # Fleet operations dashboard
-            ├── ForecastPage.tsx          # AI freight rate forecast
-            ├── VesselCharteringPage.tsx  # Vessel pricing & charter optimizer
-            ├── ProcurementPage.tsx       # Bulk cargo procurement & landed cost
-            └── ModelInsightsPage.tsx     # ML registry, metrics, inference workbench
+├── frontend/
+│   ├── .env.example           ← frontend env template
+│   ├── vite.config.ts         ← Vite config + dev proxy
+│   ├── tsconfig.json
+│   ├── package.json
+│   ├── index.html
+│   └── src/
+│       ├── App.tsx
+│       ├── main.tsx
+│       ├── index.css
+│       ├── components/        ← Shared UI components
+│       ├── pages/             ← Route-level page components
+│       ├── services/api.ts    ← All API calls (env-aware base URL)
+│       ├── types/index.ts     ← TypeScript type definitions
+│       └── context/           ← React contexts (Theme)
+│
+└── docs/
+    ├── architecture.md
+    └── api-documentation.md
 ```
 
 ---
 
-## Installation (Windows)
+## Local Setup
 
 ### Prerequisites
+- **Python** 3.10+ (3.11 recommended)
+- **Node.js** 18+ (20 recommended)
+- **npm** 9+
+- **Git**
 
-| Requirement | Minimum Version | Check Command |
-|---|---|---|
-| Python | 3.10+ | `python --version` |
-| Node.js | 18+ | `node --version` |
-| npm | 9+ | `npm --version` |
-| Git | 2.x | `git --version` |
-
-### Step 1: Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Anjali291-gif/AI-project.git
 cd AI-project
 ```
 
-### Step 2: Set Up Python Backend Environment
+### 2. Backend setup
 
 ```bash
-# Create and activate a virtual environment (recommended)
-python -m venv venv
-venv\Scripts\activate      # Windows Command Prompt
-# or: venv/Scripts/Activate.ps1   # Windows PowerShell
-
 # Install Python dependencies
-pip install -r backend/requirements.txt
+cd backend
+pip install -r requirements.txt
+
+# (Optional) Create a .env file for local overrides
+# cp ../env.example .env
+
+# Start the FastAPI backend
+# Option A — from project root (recommended):
+cd ..
+python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
+
+# Option B — from backend/ directory:
+cd backend
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-### Step 3: Set Up Frontend
+The API will be available at `http://127.0.0.1:8000`.
+Interactive docs: `http://127.0.0.1:8000/docs`
+
+### 3. Frontend setup
+
+In a **separate terminal**:
 
 ```bash
 cd frontend
 npm install
-cd ..
-```
-
-### Step 4: Environment Variables (Optional)
-
-```bash
-# Copy the template — no mandatory secrets required for local development
-copy .env.example .env
-```
-
-The default configuration (`http://127.0.0.1:8000`) works without editing.
-
----
-
-## Running the Application
-
-### Option A: One-Click Windows Launchers
-
-Open two separate Command Prompt windows:
-
-```
-# Window 1 — Backend
-start_backend.bat
-
-# Window 2 — Frontend
-start_frontend.bat
-```
-
-### Option B: Manual Launch
-
-**Terminal 1 — Start the FastAPI Backend:**
-```bash
-# From the AI-Project root directory
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-Backend will be live at: `http://127.0.0.1:8000`  
-Swagger API Docs: `http://127.0.0.1:8000/docs`
-
-**Terminal 2 — Start the React Frontend:**
-```bash
-cd frontend
 npm run dev
 ```
 
-Frontend will be live at: `http://localhost:5173`
+The app will be available at `http://localhost:5173`.
 
-### Option C: Retrain the ML Models
+> **How the connection works in development:**
+> The Vite dev server proxies all `/api/*` requests to `http://127.0.0.1:8000`
+> (configured in `vite.config.ts`). No CORS issues, no environment variable needed.
 
-```bash
-# From the AI-Project root directory
-python backend/ml/train_models.py
-```
-
-This regenerates `freight_rate_xgb.joblib`, `freight_rate_rf.joblib`, and `model_metadata.json`.
-
-### Production Frontend Build
+### 4. Run tests
 
 ```bash
+# Backend integration tests (from project root)
+python backend/tests/test_api.py
+
+# Frontend type check + production build
 cd frontend
 npm run build
-npm run preview
 ```
+
+### Windows Quick Start
+
+Double-click (run as separate processes):
+1. `start_backend.bat` — starts FastAPI on port 8000
+2. `start_frontend.bat` — starts Vite on port 5173
 
 ---
 
-## Running Tests
+## Environment Variables
 
-### Backend API Tests
+### Backend (`backend/.env` or platform env)
+
+| Variable | Default | Description |
+|---|---|---|
+| `PORT` | `8000` | Uvicorn port (Render sets this automatically) |
+| `HOST` | `0.0.0.0` | Bind address |
+| `ENVIRONMENT` | `development` | `development` or `production` |
+| `ALLOWED_ORIGINS` | `""` (all) | Comma-separated CORS origins |
+
+### Frontend (`frontend/.env` — build-time only)
+
+| Variable | Default | Description |
+|---|---|---|
+| `VITE_API_URL` | `""` | Backend public URL. Empty = use Vite proxy (dev) or same-origin. Set to backend URL for cross-origin production deploys. |
+
+> See `.env.example` and `frontend/.env.example` for annotated templates.
+
+---
+
+## Deployment (Render)
+
+This repository includes `render.yaml` for one-click deployment on [Render](https://render.com).
+
+### Services
+
+| Service | Type | Root Dir | Build Command | Start Command |
+|---|---|---|---|---|
+| `freightai-backend` | Web (Python) | `backend/` | `pip install -r requirements.txt` | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+| `freightai-frontend` | Static Site | `frontend/` | `npm install && npm run build` | — (static) |
+
+### Step-by-step deployment
+
+1. **Push** this repository to GitHub (already done).
+2. Go to [render.com](https://render.com) → **New** → **Blueprint**.
+3. Connect the GitHub repo `Anjali291-gif/AI-project`.
+4. Render reads `render.yaml` and creates both services.
+5. After the **backend** deploys, copy its public URL (e.g. `https://freightai-backend.onrender.com`).
+6. In the **frontend** service settings → **Environment** → add:
+   ```
+   VITE_API_URL = https://freightai-backend.onrender.com
+   ```
+7. In the **backend** service settings → **Environment** → add:
+   ```
+   ALLOWED_ORIGINS = https://freightai-frontend.onrender.com
+   ```
+8. **Trigger a manual redeploy** of the frontend so it rebuilds with the correct `VITE_API_URL`.
+
+> **Free tier note:** Render free services spin down after 15 minutes of inactivity. The first request after spin-down takes ~30 seconds while the ML models reload.
+
+> **ML models:** Both `.joblib` model files are committed to the repository and are loaded at startup. No separate model storage or download step is needed.
+
+### Alternative platforms
+
+| Platform | Frontend | Backend |
+|---|---|---|
+| Vercel | `vercel` (auto-detects Vite) | Use Vercel Serverless Functions or separate backend |
+| Netlify | `netlify deploy --dir=frontend/dist` | Separate backend service |
+| Railway | `railway up` from project root | Supports monorepo with separate services |
+| Fly.io | Use `Dockerfile` (not included) | Full Docker support |
+
+---
+
+## Testing
+
+### Backend (6 integration tests)
 
 ```bash
-# From the AI-Project root directory (with backend dependencies installed)
 python backend/tests/test_api.py
 ```
 
-Expected output:
-```
-Health check test passed!
-Dashboard endpoint test passed!
-Forecast test passed: Predicted rate=$16.94/t, Model=FreightAI-XGBoost-V4
-Chartering decision test passed: Top Vessel=MV Baltic Wave
-Procurement scenarios test passed!
-Model insights registry test passed!
+| Test | Endpoint | Checks |
+|---|---|---|
+| `test_health` | `GET /api/health` | Status=healthy, ML model loaded |
+| `test_dashboard` | `GET /api/dashboard` | KPIs, vessels, alerts present |
+| `test_forecast` | `POST /api/forecast` | Predicted rate, CI range, time series |
+| `test_vessels_and_chartering` | `GET /api/vessels`, `POST /api/chartering-decision` | Fleet count, ranked vessels |
+| `test_procurement` | `GET /api/procurement/scenarios` | Procurement cards, orders, schedules |
+| `test_models` | `GET /api/models` | Model metadata present |
 
-ALL BACKEND API TESTS PASSED SUCCESSFULLY! (6/6)
-```
-
-### Frontend Type Check & Production Build
+### Frontend
 
 ```bash
 cd frontend
-npm run build   # Runs: tsc && vite build
+npm run build      # TypeScript check + Vite production build
+npm run preview    # Serve the built static files locally
 ```
-
-A clean build with 0 TypeScript errors confirms frontend integrity.
 
 ---
 
 ## Screenshots
 
-| Page | Screenshot |
+| Dashboard | AI Freight Forecast |
 |---|---|
-| Dashboard | ![Dashboard](01-dashboard.png.png) |
-| AI Freight Forecast | ![Forecast](02-ai-freight-forecast.png.png) |
-| Vessel Chartering | ![Chartering](03-vessel-chartering.png.png) |
-| Bulk Cargo Procurement | ![Procurement](04-bulk-cargo-procurement.png.png) |
-| Model Insights & Registry | ![Models](05-model-insights.png.png) |
+| ![Dashboard](01-dashboard.png.png) | ![Forecast](02-ai-freight-forecast.png.png) |
+
+| Vessel Chartering | Bulk Cargo Procurement |
+|---|---|
+| ![Chartering](03-vessel-chartering.png.png) | ![Procurement](04-bulk-cargo-procurement.png.png) |
+
+| Model Insights & ML Registry |
+|---|
+| ![Model Insights](05-model-insights.png.png) |
 
 ---
 
-## Limitations
+## Limitations & Future Scope
 
-1. **Synthetic Dataset**: The training dataset is generated using parametric physics equations (not live AIS, Baltic Exchange, or Platts data). The XGBoost model, while highly accurate on synthetic data ($R^2 = 0.9676$), may require fine-tuning or transfer learning before deployment on real-world freight data.
+### Current Limitations
+- **Dataset is synthetic.** Freight rates and routes are domain-realistic but generated, not sourced from live exchanges. Do not use for operational shipping decisions.
+- **No real-time AIS data.** Vessel positions on the map are simulated. Integration with a live AIS provider (e.g. MarineTraffic API) is planned.
+- **Free-tier cold starts.** Render free services sleep after inactivity; ML model reload takes ~30s on wakeup.
+- **Single-process backend.** The free tier uses 1 Uvicorn worker. Under load, consider upgrading or using Gunicorn + multiple workers.
 
-2. **No Authentication Layer**: The current build does not include user authentication, RBAC, or multi-tenant isolation. All API endpoints are open.
-
-3. **Deterministic AIS Map**: The vessel map shows static/simulated positions rather than real-time AIS feeds from MarineTraffic or AIS data providers.
-
-4. **Single-User Deployment**: The backend is a single-process uvicorn instance suitable for local development and demonstrations. Production deployment would require gunicorn multi-worker setup, database integration, and infrastructure hardening.
-
-5. **Model Generalization**: The prediction models were trained on 12 specific trade corridors. Accuracy may degrade significantly on routes not represented in the training data.
-
-6. **Ridge Regression Not Persisted**: The Ridge Regularized Linear baseline is included in comparison metrics (from `model_metadata.json`) but its model artifact is not saved to disk. It is reproduced from metadata only.
-
----
-
-## Future Scope
-
-- [ ] Integrate real-time AIS API (MarineTraffic / VT Explorer) for live vessel positions
-- [ ] Ingest Baltic Dry Index (BDI) and Baltic Tanker Index (BCTI) live feeds
-- [ ] Add Supabase / PostgreSQL database for historical prediction logging
-- [ ] Implement JWT authentication + user roles (Admin, Analyst, Viewer)
-- [ ] Deploy SHAP TreeExplainer for real per-prediction feature attribution
-- [ ] Fine-tune models on real Baltic Exchange freight fixture data
-- [ ] Add email/SMS alert notifications for rate threshold crossings
-- [ ] Container deployment: Docker + Docker Compose configuration
-- [ ] CI/CD pipeline with GitHub Actions (lint, test, build, deploy)
-- [ ] Mobile-responsive PWA optimization
+### Future Scope
+- [ ] Live AIS data integration (MarineTraffic / AISHub API)
+- [ ] Real historical rate data from Baltic Exchange / Clarksons
+- [ ] User authentication and saved forecasts
+- [ ] Email/SMS alert notifications for rate thresholds
+- [ ] Model retraining pipeline with new data
+- [ ] Containerization (Docker + docker-compose)
+- [ ] CI/CD pipeline (GitHub Actions)
+- [ ] Mobile-responsive PWA
 
 ---
 
@@ -611,28 +453,19 @@ A clean build with 0 TypeScript errors confirms frontend integrity.
 
 | Name | Role |
 |---|---|
-| **Anjali Yadav** | Full-Stack Developer, ML Engineer |
-
-> Built for Smart India Hackathon 2026 · Problem Statement P23 (SIH26006)
+| Anjali Yadav (Anjali291-gif) | Full-stack development, ML engineering, project lead |
 
 ---
 
 ## Acknowledgements
 
-- **Smart India Hackathon 2026** — for the problem statement and platform for innovation
-- **XGBoost** (Chen & Guestrin, 2016) — gradient boosting framework used for the primary freight prediction model
-- **FastAPI** — high-performance async Python API framework
-- **React** + **Vite** — fast, modern frontend development tooling
-- **Tailwind CSS** — utility-first CSS for the maritime dark theme
-- **Recharts** — composable React chart library
-- **scikit-learn** — ML baseline models and preprocessing utilities
-- **Baltic Exchange** — conceptual domain reference for freight rate economics and maritime indices
+- [SIH 2026](https://www.sih.gov.in/) for the problem statement framework
+- [FastAPI](https://fastapi.tiangolo.com) — high-performance Python API framework
+- [XGBoost](https://xgboost.readthedocs.io/) — gradient boosting ML library
+- [Recharts](https://recharts.org/) — React charting library
+- [Leaflet](https://leafletjs.com/) — open-source interactive maps
+- [Render](https://render.com) — cloud deployment platform
 
 ---
 
-<div align="center">
-
-**FreightAI** · SIH 2026 · P23 · SIH26006  
-Built with ❤️ for intelligent maritime freight intelligence
-
-</div>
+*FreightAI is a research/academic project. It is not affiliated with any shipping exchange or logistics company.*
