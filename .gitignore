@@ -1,0 +1,120 @@
+# ============================================================
+# FreightAI – Intelligent Freight Forecasting & Vessel Chartering
+# .gitignore — maintained by Anjali291-gif
+# ============================================================
+
+# ── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-link
+*.manifest
+*.spec
+*.pdb
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+
+# ── Virtual Environments ─────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+conda-meta/
+
+# ── Secrets & Environment Variables ─────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+.secret*
+*_credentials*
+
+# ── Frontend / Node.js ──────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.cache/
+frontend/.parcel-cache/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn-integrity
+
+# ── Vite / Build Artifacts ───────────────────────────────────
+frontend/dist/
+dist/
+*.tsbuildinfo
+
+# ── IDE & Editor files ───────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+
+# ── Testing & Coverage ───────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+junit.xml
+coverage.xml
+*.coveragerc
+
+# ── Logs & Temporary ─────────────────────────────────────────
+*.log
+logs/
+*.tmp
+*.temp
+.cache/
+*.pid
+
+# ── Jupyter Notebooks ────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── OS Artifacts ─────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ── Archives ─────────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================================
+# INTENTIONALLY INCLUDED (do NOT add patterns that exclude these):
+# backend/ml/models/freight_rate_xgb.joblib   (792 KB — primary model)
+# backend/ml/models/freight_rate_rf.joblib     (4.1 MB — baseline model)
+# backend/data/historical_freight_data.csv     (703 KB — training dataset)
+# backend/ml/models/model_metadata.json        (3 KB — evaluation metrics)
+# ============================================================

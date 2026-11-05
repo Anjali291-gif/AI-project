@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f8fafc;
+    --text-primary: #0f172a;
+    --border-color: #e2e8f0;
+  }
+
+  .dark {
+    --bg-primary: #0b0f17;
+    --text-primary: #f8fafc;
+    --border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom Scrollbars */
+.dark ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Leaflet Map Custom Styling */
+.leaflet-container {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  background-color: #0b0f17 !important;
+  width: 100% !important;
+  height: 100% !important;
+  outline: none !important;
+}
+
+html:not(.dark) .leaflet-container {
+  background-color: #f1f5f9 !important;
+}
+
+/* Leaflet Tile Styling for Dark Maritime Mode
+   Transforms OpenStreetMap standard tiles into a deep navy maritime SaaS basemap
+   without breaking tile downloads or needing unreliable 3rd-party tile servers.
+*/
+.dark .leaflet-tile-pane {
+  filter: brightness(0.6) invert(1) contrast(1.25) hue-rotate(200deg) saturate(0.55) brightness(0.9);
+}
+
+.dark .leaflet-tile-pane.satellite-tiles {
+  filter: none !important;
+}
+
+html:not(.dark) .leaflet-tile-pane {
+  filter: none !important;
+}
+
+/* Keep Leaflet pane z-indexes in correct order */
+.leaflet-map-pane      { z-index: 100 !important; }
+.leaflet-tile-pane     { z-index: 200 !important; }
+.leaflet-overlay-pane  { z-index: 400 !important; }
+.leaflet-shadow-pane   { z-index: 500 !important; }
+.leaflet-marker-pane   { z-index: 600 !important; }
+.leaflet-tooltip-pane  { z-index: 650 !important; }
+.leaflet-popup-pane    { z-index: 700 !important; }
+
+/* Custom divIcons background reset (prevent default Leaflet white box) */
+.leaflet-div-icon,
+.port-marker-div,
+.vessel-marker-div {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Custom Leaflet Popups */
+.dark .leaflet-popup-content-wrapper {
+  background-color: #121824 !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(6, 182, 212, 0.4) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+}
+.dark .leaflet-popup-tip {
+  background-color: #121824 !important;
+  border: 1px solid rgba(6, 182, 212, 0.4) !important;
+}
+
+html:not(.dark) .leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+  padding: 0 !important;
+}
+html:not(.dark) .leaflet-popup-tip {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px !important;
+  line-height: 1.45 !important;
+}
+
+/* Attribution strip */
+.leaflet-control-attribution {
+  font-size: 9px !important;
+  background: rgba(13, 19, 31, 0.8) !important;
+  color: #64748b !important;
+  border-radius: 4px 0 0 0 !important;
+  padding: 2px 6px !important;
+}
+.leaflet-control-attribution a {
+  color: #38bdf8 !important;
+  text-decoration: none !important;
+}
+html:not(.dark) .leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #64748b !important;
+}
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
+/* Pulse animation for vessels */
+@keyframes vessel-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
+}
+
+.vessel-ping {
+  animation: vessel-pulse 2s infinite;
+}

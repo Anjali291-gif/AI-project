@@ -1,0 +1,127 @@
+{
+  "model_name": "FreightAI-XGBoost-V4",
+  "algorithm": "Extreme Gradient Boosting (XGBoost)",
+  "training_samples": 5200,
+  "test_samples": 1300,
+  "trained_at": "2026-10-28T14:49:38.290860",
+  "metrics": {
+    "mae": 1.108,
+    "rmse": 1.544,
+    "r2": 0.9676,
+    "mape_percent": 7.45
+  },
+  "comparison_models": [
+    {
+      "name": "FreightAI-XGBoost-V4 (Selected)",
+      "algorithm": "XGBoost Regressor (180 trees, depth 6)",
+      "mae": 1.108,
+      "rmse": 1.544,
+      "r2": 0.9676,
+      "mape_percent": 7.45,
+      "latency_ms": 1.4,
+      "status": "Production Active"
+    },
+    {
+      "name": "Random-Forest-Baseline-V2",
+      "algorithm": "Random Forest Regressor (120 trees)",
+      "mae": 1.466,
+      "rmse": 2.013,
+      "r2": 0.9449,
+      "mape_percent": 10.43,
+      "latency_ms": 4.8,
+      "status": "Candidate"
+    },
+    {
+      "name": "Linear-Ridge-Benchmark-V1",
+      "algorithm": "Ridge Regularized Linear Regression",
+      "mae": 3.42,
+      "rmse": 4.85,
+      "r2": 0.8124,
+      "mape_percent": 11.2,
+      "latency_ms": 0.5,
+      "status": "Deprecated"
+    }
+  ],
+  "top_features": [
+    {
+      "feature": "vessel_class_Handysize",
+      "importance": 0.22
+    },
+    {
+      "feature": "vessel_class_VLCC",
+      "importance": 0.1807
+    },
+    {
+      "feature": "vessel_dwt",
+      "importance": 0.1546
+    },
+    {
+      "feature": "distance_nm",
+      "importance": 0.138
+    },
+    {
+      "feature": "vessel_class_MR2",
+      "importance": 0.1133
+    },
+    {
+      "feature": "canal_transit",
+      "importance": 0.1011
+    },
+    {
+      "feature": "vessel_class_Supramax",
+      "importance": 0.0263
+    },
+    {
+      "feature": "cargo_demand_index",
+      "importance": 0.0209
+    },
+    {
+      "feature": "vessel_class_LR1",
+      "importance": 0.0142
+    },
+    {
+      "feature": "port_congestion_days",
+      "importance": 0.01
+    },
+    {
+      "feature": "commodity_Chemicals / Sulfuric Acid",
+      "importance": 0.0042
+    },
+    {
+      "feature": "weather_risk_index",
+      "importance": 0.0041
+    }
+  ],
+  "business_drivers": {
+    "Bunker Fuel Price (VLSFO)": 0.0034,
+    "Voyage Distance & Canal": 0.2391,
+    "Vessel Class & DWT Capacity": 0.7108,
+    "Cargo Demand Index": 0.0209,
+    "Port Congestion Delays": 0.01,
+    "Commodity Type": 0.0118,
+    "Adverse Weather & Sea State": 0.0041
+  },
+  "feature_columns": [
+    "distance_nm",
+    "vessel_dwt",
+    "bunker_price_usd_t",
+    "port_congestion_days",
+    "weather_risk_index",
+    "cargo_demand_index",
+    "canal_transit",
+    "vessel_class_Handysize",
+    "vessel_class_LR1",
+    "vessel_class_LR2",
+    "vessel_class_LR3",
+    "vessel_class_MR2",
+    "vessel_class_Panamax",
+    "vessel_class_Supramax",
+    "vessel_class_VLCC",
+    "commodity_Chemicals / Sulfuric Acid",
+    "commodity_Clean Petroleum",
+    "commodity_Coal",
+    "commodity_Crude Oil",
+    "commodity_Grain",
+    "commodity_Iron Ore"
+  ]
+}
